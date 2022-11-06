@@ -62,6 +62,12 @@ if __name__ == "__main__":
 
         for (i_k, p) in new_points:
             k_points[i_k] = p
+        
+        k_points.persist()
+
+
+    with open(sys.argv[2], "w") as result_file:
+        result_file.write(str(k_points))
 
     
     
