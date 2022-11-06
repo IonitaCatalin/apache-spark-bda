@@ -14,7 +14,6 @@ if __name__ == '__main__':
 
     current_dir_path = getcwd()
     
-    # result_path = '/Users/catalin/Documents/bda/apache-spark-bda/shakespeare/results'
     result_path = join(current_dir_path, 'shakespeare/results')
     main_dir_path = join(current_dir_path, 'shakespeare');
 

@@ -1,5 +1,6 @@
 from os import listdir
 from os.path import isfile, join
+from os import getcwd
 from pyspark import SparkConf, SparkContext
 
 
@@ -20,25 +21,14 @@ if __name__ == '__main__':
 
     for file_path in get_files_from_dir(main_dir_path):
 
-        counts = sc.textFile(file_path) \
-            .flatMap(lambda line: line.split()) \
-            .map(lambda word: (word[0],1)) \
-            .reduceByKey(lambda v1, v2: v1 + v2) \
-        
-        lengths = sc.textFile(file_path) \
+        averages = sc.textFile(file_path) \
             .flatMap(lambda line: line.split()) \
             .map(lambda word: (word[0], len(word))) \
-            .reduceByKey(lambda v1, v2: (v1 + v2)) \
-
-        counts = {pair[0]:pair[1] for pair in counts}
-        lengths = {pair[0]:pair[1] for pair in lengths}
-
-        averages = {}
-
-        for key in lengths.keys():
-            averages[key] = lengths[key] / counts[key];
+            .groupByKey() \
+            .map(lambda tuple: (tuple[0], sum(tuple[1]) / len(tuple[1]))) \
+            .collect()
 
         with open(join(result_path, join(result_path, file_path.split('/')[-1] ,'averages.out')), 'w') as result_file:
-            result_file.write(str(joined))
+            result_file.write(str(averages))
         
         
