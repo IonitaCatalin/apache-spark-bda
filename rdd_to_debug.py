@@ -1,5 +1,6 @@
 from os import listdir
 from os.path import isfile, join
+from os import getcwd
 from pyspark import SparkConf, SparkContext
 
 
@@ -11,11 +12,14 @@ if __name__ == '__main__':
         .setMaster("local") \
         .setAppName("Word Count App!") \
     
-    result_path = '/home/catalinm/Documents/studying/bda/shakespeare/results'
+    current_dir_path = getcwd()
+    
+    result_path = join(current_dir_path, 'shakespeare/results')
+    main_dir_path = join(current_dir_path, 'shakespeare');
 
     sc = SparkContext(conf = conf)
 
-    for file_path in get_files_from_dir('/home/catalinm/Documents/studying/bda/shakespeare'):
+    for file_path in get_files_from_dir(main_dir_path):
 
         counts = sc.textFile(file_path) \
             .flatMap(lambda line: line.split()) \
@@ -23,6 +27,3 @@ if __name__ == '__main__':
             .reduceByKey(lambda v1,v2: v1 + v2) \
 
         print(counts.toDebugString())
-
-        
-        
