@@ -12,7 +12,7 @@ if __name__ == '__main__':
         .setMaster("local") \
         .setAppName("Word Count App!") \
 
-    current_dir_path = getcwd()
+    current_dir_path = '/Users/catalin/Documents/bda/apache-spark-bda'
     
     result_path = join(current_dir_path, 'shakespeare/results')
     main_dir_path = join(current_dir_path, 'shakespeare');
